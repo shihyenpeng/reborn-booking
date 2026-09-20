@@ -33,17 +33,28 @@
   const statusEl = document.getElementById('status');
 
   function goToBooking(idToken) {
-    // window.name 可在跨網域導向後保留。
-    // Apps Script 讀取後會立刻清除。
-    if (idToken) {
-      window.name =
-        'REBORN_LINE_ID_TOKEN:' +
-        String(idToken);
-    } else {
-      window.name = '';
+    if (!idToken) {
+      window.location.replace(APP_URL);
+      return;
     }
 
-    window.location.replace(APP_URL);
+    /*
+      v5：用 form POST 把 raw LINE ID Token 直接交給 Apps Script。
+      Token 不放在 query string / fragment，也不依賴 window.name。
+    */
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = APP_URL;
+    form.style.display = 'none';
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'id_token';
+    input.value = String(idToken);
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
   }
 
   async function start() {
