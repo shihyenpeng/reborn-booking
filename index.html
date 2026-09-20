@@ -33,15 +33,17 @@
   const statusEl = document.getElementById('status');
 
   function goToBooking(idToken) {
-    let target = APP_URL;
-
+    // window.name 可在跨網域導向後保留。
+    // Apps Script 讀取後會立刻清除。
     if (idToken) {
-      target +=
-        '#reborn_id_token=' +
-        encodeURIComponent(String(idToken));
+      window.name =
+        'REBORN_LINE_ID_TOKEN:' +
+        String(idToken);
+    } else {
+      window.name = '';
     }
 
-    window.location.replace(target);
+    window.location.replace(APP_URL);
   }
 
   async function start() {
