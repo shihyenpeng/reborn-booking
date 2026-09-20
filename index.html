@@ -1,0 +1,3258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans TC",
+        "PingFang TC",
+        "Microsoft JhengHei",
+        sans-serif;
+      color: #222;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: auto;
+      min-height: 100vh;
+      background: #fff;
+      padding: 32px 24px 60px;
+    }
+
+    /* =========================
+       品牌
+    ========================= */
+
+    .brand {
+      text-align: center;
+      margin-top: 18px;
+      margin-bottom: 40px;
+    }
+
+    .brand-en {
+      font-family: Georgia, serif;
+      font-size: 30px;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    .brand-zh {
+      font-size: 14px;
+      letter-spacing: 3px;
+      margin-top: 8px;
+      color: #777;
+    }
+
+    /* =========================
+       進度
+    ========================= */
+
+    .progress {
+      display: none;
+      justify-content: space-between;
+      margin-bottom: 45px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .progress .active {
+      color: #222;
+      font-weight: 700;
+    }
+
+    /* =========================
+       標題
+    ========================= */
+
+    h1 {
+      font-size: 25px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      color: #777;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 30px;
+    }
+
+    /* =========================
+       首頁
+    ========================= */
+
+    .home-intro {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .home-intro h1 {
+      font-size: 27px;
+    }
+
+    .home-card {
+      border: 1px solid #d5d5d0;
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    .home-card:hover {
+      background: #fafaf8;
+    }
+
+    .home-card:active {
+      transform: scale(0.985);
+    }
+
+    .home-card-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .home-card-description {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .home-card-arrow {
+      margin-top: 16px;
+      color: #777;
+      font-size: 18px;
+    }
+
+    /* =========================
+       卡片
+    ========================= */
+
+    .service-card {
+      border: 1px solid #d5d5d0;
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #fff;
+    }
+
+    .service-card:hover {
+      background: #fafaf8;
+    }
+
+    .service-card:active {
+      transform: scale(0.98);
+    }
+
+    .service-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .service-description {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       時間
+    ========================= */
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .time-card {
+      border: 1px solid #d5d5d0;
+      border-radius: 12px;
+      padding: 16px 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    .time-card:hover {
+      background: #fafaf8;
+    }
+
+    .time-card:active {
+      transform: scale(0.97);
+    }
+
+    /* =========================
+       返回
+    ========================= */
+
+    .back-button {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 28px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .back-button:hover {
+      color: #222;
+    }
+
+    /* =========================
+       Loading
+    ========================= */
+
+    .loading {
+      text-align: center;
+      padding: 35px 10px;
+      color: #999;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       摘要
+    ========================= */
+
+    .summary {
+      border-top: 1px solid #e5e5e0;
+      margin-top: 10px;
+      margin-bottom: 34px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid #e5e5e0;
+    }
+
+    .summary-label {
+      color: #999;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .summary-value {
+      text-align: right;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       表單
+    ========================= */
+
+    .form-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 4px 0 22px;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 9px;
+    }
+
+    .required {
+      color: #a54b4b;
+      margin-left: 3px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      border: 1px solid #d5d5d0;
+      border-radius: 12px;
+      background: #fff;
+      color: #222;
+      font-family: inherit;
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-input {
+      height: 52px;
+      padding: 0 15px;
+    }
+
+    .form-textarea {
+      min-height: 110px;
+      padding: 14px 15px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: #777;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: #bbb;
+    }
+
+    .form-hint {
+      color: #999;
+      font-size: 12px;
+      margin-top: 7px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       按鈕
+    ========================= */
+
+    .primary-button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 10px;
+      background: #222;
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .primary-button:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .secondary-button {
+      width: 100%;
+      border: 1px solid #d5d5d0;
+      border-radius: 14px;
+      padding: 17px;
+      margin-top: 14px;
+      background: #fff;
+      color: #333;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .danger-button {
+      width: 100%;
+      border: 1px solid #c9a9a9;
+      border-radius: 14px;
+      padding: 17px;
+      margin-top: 14px;
+      background: #fff;
+      color: #8b3f3f;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .danger-button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    /* =========================
+       訊息
+    ========================= */
+
+    .message {
+      display: none;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 20px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .message.error {
+      display: block;
+      background: #faf2f2;
+      color: #8b3f3f;
+      border: 1px solid #ead4d4;
+    }
+
+    .message.info {
+      display: block;
+      background: #f7f7f5;
+      color: #666;
+      border: 1px solid #e3e3df;
+    }
+
+    /* =========================
+       待確認提示
+    ========================= */
+
+    .pending-box {
+      background: #f7f7f5;
+      border: 1px solid #deded9;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 28px;
+      color: #555;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .pending-box strong {
+      color: #222;
+    }
+
+    /* =========================
+       狀態
+    ========================= */
+
+    .status-badge {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 7px 13px;
+      font-size: 13px;
+      background: #f2f2ef;
+      color: #555;
+      font-weight: 600;
+    }
+
+    /* =========================
+       成功畫面
+    ========================= */
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      margin: 5px auto 25px;
+      border: 1px solid #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .success-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .success-text {
+      text-align: center;
+      color: #777;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .case-box {
+      background: #f7f7f5;
+      border-radius: 14px;
+      padding: 22px 18px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .case-label {
+      color: #999;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .case-id {
+      font-family: Georgia, serif;
+      font-size: 21px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    /* =========================
+       Footer
+    ========================= */
+
+    .footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 60px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 420px) {
+
+      .container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .progress {
+        font-size: 12px;
+      }
+
+      .time-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+<!-- Reborn Apps Script Bridge -->
+<iframe
+  id="rebornApiBridge"
+  src="https://script.google.com/macros/s/AKfycbysPMNi32tEjmnm5bSHRHkTkRnXf31z8pXvQ5nZkpnx2yJ9uV_v9ucp2l_y8fX50Uwqxw/exec?page=bridge"
+  title="Reborn API Bridge"
+  style="display:none;width:0;height:0;border:0"
+  aria-hidden="true">
+</iframe>
+
+
+<div class="container">
+
+  <!-- 品牌 -->
+
+  <div class="brand">
+    <div class="brand-en">Reborn</div>
+    <div class="brand-zh">芮朋麻醉會社</div>
+  </div>
+
+
+  <!-- 預約進度 -->
+
+  <div class="progress" id="progressBar">
+
+    <span id="progress1">1 服務</span>
+    <span id="progress2">2 醫師</span>
+    <span id="progress3">3 日期</span>
+    <span id="progress4">4 時間</span>
+    <span id="progress5">5 確認</span>
+
+  </div>
+
+
+  <!-- =====================================================
+       首頁
+  ====================================================== -->
+
+  <div id="homePage">
+
+    <div class="home-intro">
+
+      <h1>線上預約</h1>
+
+      <div class="subtitle">
+        歡迎使用芮朋麻醉會社線上預約系統
+      </div>
+
+    </div>
+
+
+    <div class="home-card"
+         onclick="startBooking()">
+
+      <div class="home-card-title">
+        提出預約申請
+      </div>
+
+      <div class="home-card-description">
+        選擇麻醉服務、麻醉醫師、日期與希望預約的時段
+      </div>
+
+      <div class="home-card-arrow">
+        →
+      </div>
+
+    </div>
+
+
+    <div class="home-card"
+         onclick="openBookingLookup()">
+
+      <div class="home-card-title">
+        查詢／取消預約
+      </div>
+
+      <div class="home-card-description">
+        使用案件編號與預約聯絡電話查詢申請或預約狀態
+      </div>
+
+      <div class="home-card-arrow">
+        →
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STEP 1
+  ====================================================== -->
+
+  <div id="servicePage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="goHome()">
+      ← 返回首頁
+    </div>
+
+    <h1>選擇服務</h1>
+
+    <div class="subtitle">
+      請選擇本次需要預約的麻醉服務
+    </div>
+
+    <div id="serviceList"></div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STEP 2
+  ====================================================== -->
+
+  <div id="doctorPage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="backToServices()">
+      ← 返回選擇服務
+    </div>
+
+    <h1>選擇麻醉醫師</h1>
+
+    <div class="subtitle">
+      請選擇本次服務的麻醉醫師
+    </div>
+
+    <div id="doctorList"></div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STEP 3
+  ====================================================== -->
+
+  <div id="datePage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="backToDoctors()">
+      ← 返回選擇醫師
+    </div>
+
+    <h1>選擇日期</h1>
+
+    <div class="subtitle">
+      請選擇希望預約的日期
+    </div>
+
+    <div id="dateList"></div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STEP 4
+  ====================================================== -->
+
+  <div id="timePage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="backToDates()">
+      ← 返回選擇日期
+    </div>
+
+    <h1>選擇時間</h1>
+
+    <div class="subtitle">
+      請選擇希望預約的開始時間
+    </div>
+
+    <div id="timeList"></div>
+
+  </div>
+
+
+  <!-- =====================================================
+       STEP 5
+  ====================================================== -->
+
+  <div id="confirmPage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="backToTimes()">
+      ← 返回選擇時間
+    </div>
+
+    <h1>確認預約申請</h1>
+
+    <div class="subtitle">
+      請確認申請內容，並填寫診所聯絡資料。送出後須經芮朋麻醉會社確認，預約才正式成立。
+    </div>
+
+
+    <div class="summary">
+
+      <div class="summary-row">
+        <div class="summary-label">服務</div>
+        <div class="summary-value"
+             id="confirmService"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">麻醉醫師</div>
+        <div class="summary-value"
+             id="confirmDoctor"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">日期</div>
+        <div class="summary-value"
+             id="confirmDate"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">開始時間</div>
+        <div class="summary-value"
+             id="confirmTime"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">預估時數</div>
+        <div class="summary-value"
+             id="confirmDuration"></div>
+      </div>
+
+    </div>
+
+
+    <div class="form-title">
+      診所聯絡資料
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        診所名稱
+        <span class="required">*</span>
+      </label>
+
+      <input id="clinicName"
+             class="form-input"
+             type="text"
+             placeholder="請輸入診所名稱">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        聯絡人
+        <span class="required">*</span>
+      </label>
+
+      <input id="contactName"
+             class="form-input"
+             type="text"
+             placeholder="請輸入聯絡人姓名">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        聯絡電話
+        <span class="required">*</span>
+      </label>
+
+      <input id="contactPhone"
+             class="form-input"
+             type="tel"
+             inputmode="tel"
+             placeholder="例如：0912345678">
+
+      <div class="form-hint">
+        查詢或取消預約申請時會使用此電話進行驗證
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        備註
+      </label>
+
+      <textarea id="bookingNote"
+                class="form-textarea"
+                placeholder="如有其他需求，可在此備註"></textarea>
+
+    </div>
+
+
+    <div class="pending-box">
+      <strong>送出前請注意</strong><br>
+      送出申請後，系統會暫時保留您選擇的時段；此時尚未正式成立預約。待芮朋麻醉會社確認後，預約排程才正式成立。
+    </div>
+
+
+    <div id="bookingMessage"
+         class="message"></div>
+
+
+    <button id="submitBookingButton"
+            class="primary-button"
+            type="button"
+            onclick="submitBooking()">
+      送出預約申請
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       預約申請送出成功
+  ====================================================== -->
+
+  <div id="successPage"
+       style="display:none;">
+
+    <div class="success-icon">✓</div>
+
+    <div class="success-title">
+      預約申請已送出
+    </div>
+
+    <div class="success-text">
+      我們已收到您的預約申請。<br>
+      您選擇的時段目前已暫時保留。
+    </div>
+
+
+    <div class="pending-box">
+      <strong>目前尚未正式成立預約</strong><br>
+      本申請須經芮朋麻醉會社確認後，預約排程才正式成立。確認結果將另行通知。
+    </div>
+
+
+    <div class="case-box">
+
+      <div class="case-label">
+        預約申請案件編號
+      </div>
+
+      <div class="case-id"
+           id="successCaseId"></div>
+
+    </div>
+
+
+    <div class="summary">
+
+      <div class="summary-row">
+        <div class="summary-label">狀態</div>
+        <div class="summary-value">
+          <span class="status-badge">
+            待確認
+          </span>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">服務</div>
+        <div class="summary-value"
+             id="successService"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">麻醉醫師</div>
+        <div class="summary-value"
+             id="successDoctor"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">日期</div>
+        <div class="summary-value"
+             id="successDate"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">時間</div>
+        <div class="summary-value"
+             id="successTime"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">診所</div>
+        <div class="summary-value"
+             id="successClinic"></div>
+      </div>
+
+    </div>
+
+
+    <div class="success-text">
+      請妥善保存案件編號，以便後續查詢或取消預約申請。
+    </div>
+
+
+    <button class="primary-button"
+            onclick="goHome()">
+      返回首頁
+    </button>
+
+
+    <button class="secondary-button"
+            onclick="startNewBooking()">
+      提出另一筆預約申請
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       查詢預約
+  ====================================================== -->
+
+  <div id="lookupPage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="goHome()">
+      ← 返回首頁
+    </div>
+
+    <h1>查詢預約</h1>
+
+    <div class="subtitle">
+      請輸入案件編號與申請時填寫的聯絡電話
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        案件編號
+      </label>
+
+      <input id="lookupCaseId"
+             class="form-input"
+             type="text"
+             autocapitalize="characters"
+             placeholder="例如：RB20260920-001">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label class="form-label">
+        聯絡電話
+      </label>
+
+      <input id="lookupPhone"
+             class="form-input"
+             type="tel"
+             inputmode="tel"
+             placeholder="申請時填寫的電話">
+
+    </div>
+
+
+    <div id="lookupMessage"
+         class="message"></div>
+
+
+    <button id="lookupButton"
+            class="primary-button"
+            onclick="searchBooking()">
+      查詢預約
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       查詢結果
+  ====================================================== -->
+
+  <div id="bookingDetailPage"
+       style="display:none;">
+
+    <div class="back-button"
+         onclick="openBookingLookup()">
+      ← 返回查詢
+    </div>
+
+    <h1>預約資料</h1>
+
+    <div class="subtitle">
+      以下為目前案件資料與最新狀態
+    </div>
+
+
+    <div class="summary">
+
+      <div class="summary-row">
+        <div class="summary-label">案件編號</div>
+        <div class="summary-value"
+             id="detailCaseId"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">狀態</div>
+        <div class="summary-value">
+          <span class="status-badge"
+                id="detailStatus"></span>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">診所</div>
+        <div class="summary-value"
+             id="detailClinic"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">服務</div>
+        <div class="summary-value"
+             id="detailService"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">麻醉醫師</div>
+        <div class="summary-value"
+             id="detailDoctor"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">日期</div>
+        <div class="summary-value"
+             id="detailDate"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">時間</div>
+        <div class="summary-value"
+             id="detailTime"></div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-label">預估時數</div>
+        <div class="summary-value"
+             id="detailDuration"></div>
+      </div>
+
+    </div>
+
+
+    <div id="detailMessage"
+         class="message"></div>
+
+
+    <button id="cancelBookingButton"
+            class="danger-button"
+            onclick="requestCancelBooking()">
+      取消此預約
+    </button>
+
+
+    <button class="secondary-button"
+            onclick="goHome()">
+      返回首頁
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       取消成功
+  ====================================================== -->
+
+  <div id="cancelSuccessPage"
+       style="display:none;">
+
+    <div class="success-icon">✓</div>
+
+    <div class="success-title">
+      已取消
+    </div>
+
+    <div class="success-text">
+      此案件已取消。<br>
+      原保留時段已重新釋出。
+    </div>
+
+
+    <div class="case-box">
+
+      <div class="case-label">
+        已取消案件
+      </div>
+
+      <div class="case-id"
+           id="cancelledCaseId"></div>
+
+    </div>
+
+
+    <button class="primary-button"
+            onclick="goHome()">
+      返回首頁
+    </button>
+
+  </div>
+
+
+  <!-- Footer -->
+
+  <div class="footer">
+    Reborn 芮朋麻醉會社
+    <br>
+    Anesthesia Care
+  </div>
+
+</div>
+
+
+<script>
+/* =====================================================
+   GitHub Pages → Apps Script Bridge
+   提供與 google.script.run 相容的前端介面，
+   讓既有 Reborn 預約程式不必重寫。
+===================================================== */
+(function () {
+  'use strict';
+
+  const BRIDGE_ID = 'rebornApiBridge';
+  const pending = new Map();
+  let sequence = 0;
+
+  function getBridgeWindow() {
+    const iframe = document.getElementById(BRIDGE_ID);
+    return iframe && iframe.contentWindow ? iframe.contentWindow : null;
+  }
+
+  function sendRequest(method, args, successHandler, failureHandler) {
+    const target = getBridgeWindow();
+
+    if (!target) {
+      const error = new Error('預約系統連線尚未完成，請稍後再試。');
+      if (failureHandler) failureHandler(error);
+      return;
+    }
+
+    const requestId =
+      'reborn-' + Date.now() + '-' + (++sequence);
+
+    pending.set(requestId, {
+      successHandler: successHandler,
+      failureHandler: failureHandler,
+      timer: setTimeout(function () {
+        const item = pending.get(requestId);
+        if (!item) return;
+        pending.delete(requestId);
+        if (item.failureHandler) {
+          item.failureHandler(
+            new Error('系統連線逾時，請確認網路後再試。')
+          );
+        }
+      }, 30000)
+    });
+
+    target.postMessage({
+      type: 'REBORN_API_REQUEST',
+      requestId: requestId,
+      method: method,
+      args: args
+    }, '*');
+  }
+
+  window.addEventListener('message', function (event) {
+    const data = event.data || {};
+
+    if (data.type !== 'REBORN_API_RESPONSE') return;
+
+    const item = pending.get(String(data.requestId || ''));
+    if (!item) return;
+
+    clearTimeout(item.timer);
+    pending.delete(String(data.requestId || ''));
+
+    if (data.ok) {
+      if (item.successHandler) item.successHandler(data.result);
+    } else {
+      if (item.failureHandler) {
+        item.failureHandler(
+          new Error(String(data.error || '系統處理失敗'))
+        );
+      }
+    }
+  });
+
+  function makeRunner(successHandler, failureHandler) {
+    return new Proxy({}, {
+      get: function (_target, prop) {
+        if (prop === 'withSuccessHandler') {
+          return function (fn) {
+            return makeRunner(fn, failureHandler);
+          };
+        }
+
+        if (prop === 'withFailureHandler') {
+          return function (fn) {
+            return makeRunner(successHandler, fn);
+          };
+        }
+
+        return function () {
+          sendRequest(
+            String(prop),
+            Array.prototype.slice.call(arguments),
+            successHandler,
+            failureHandler
+          );
+        };
+      }
+    });
+  }
+
+  window.google = window.google || {};
+  window.google.script = window.google.script || {};
+  window.google.script.run = makeRunner(null, null);
+})();
+</script>
+
+<script>
+
+/* =====================================================
+   全域狀態
+===================================================== */
+
+let selectedService = null;
+let selectedDoctor = null;
+let selectedDate = null;
+let selectedTime = null;
+
+let bookingSubmitting = false;
+
+let currentLookupBooking = null;
+let currentLookupPhone = '';
+
+
+// LINE LIFF
+const REBORN_LIFF_ID = '2011678150-UOU0NroQ';
+let rebornLineIdToken = '';
+let rebornLiffReady = false;
+
+
+
+/* =====================================================
+   初始化
+===================================================== */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function() {
+
+    showStandalonePage(
+      'homePage'
+    );
+
+    initializeRebornLiff();
+
+  }
+);
+
+
+/* =====================================================
+   LINE LIFF 初始化
+
+   - 從 LINE LIFF 開啟：取得 raw ID Token
+   - 一般 Chrome / Safari：不強制 LINE 登入，照常使用
+   - 不把 getProfile() / decoded token 的 userId 傳給後端
+===================================================== */
+
+async function initializeRebornLiff() {
+
+  rebornLineIdToken = '';
+  rebornLiffReady = false;
+
+  if (
+    typeof liff === 'undefined'
+  ) {
+    console.warn(
+      'LIFF SDK 未載入；將以一般瀏覽器模式繼續。'
+    );
+    return;
+  }
+
+  try {
+
+    await liff.init({
+      liffId: REBORN_LIFF_ID
+    });
+
+    rebornLiffReady = true;
+
+    if (
+      liff.isLoggedIn()
+    ) {
+
+      const idToken =
+        liff.getIDToken();
+
+      if (idToken) {
+        rebornLineIdToken =
+          String(idToken);
+      }
+
+    }
+
+  }
+  catch (error) {
+
+    console.error(
+      'LIFF 初始化失敗：',
+      error
+    );
+
+    // LIFF 失敗不能阻止一般網頁預約。
+    rebornLineIdToken = '';
+    rebornLiffReady = false;
+
+  }
+
+}
+
+
+
+/* =====================================================
+   頁面控制
+===================================================== */
+
+const allPages = [
+  'homePage',
+  'servicePage',
+  'doctorPage',
+  'datePage',
+  'timePage',
+  'confirmPage',
+  'successPage',
+  'lookupPage',
+  'bookingDetailPage',
+  'cancelSuccessPage'
+];
+
+
+function hideAllPages() {
+
+  allPages.forEach(
+    function(id) {
+
+      const el =
+        document.getElementById(id);
+
+      if (el) {
+        el.style.display = 'none';
+      }
+
+    }
+  );
+
+}
+
+
+function showStandalonePage(
+  pageId
+) {
+
+  hideAllPages();
+
+  document.getElementById(
+    pageId
+  ).style.display = 'block';
+
+
+  document.getElementById(
+    'progressBar'
+  ).style.display = 'none';
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+}
+
+
+function showBookingPage(
+  pageId,
+  step
+) {
+
+  hideAllPages();
+
+
+  document.getElementById(
+    pageId
+  ).style.display = 'block';
+
+
+  const progressBar =
+    document.getElementById(
+      'progressBar'
+    );
+
+
+  progressBar.style.display =
+    'flex';
+
+
+  for (
+    let i = 1;
+    i <= 5;
+    i++
+  ) {
+
+    document
+      .getElementById(
+        'progress' + i
+      )
+      .classList
+      .remove('active');
+
+  }
+
+
+  document
+    .getElementById(
+      'progress' + step
+    )
+    .classList
+    .add('active');
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+
+}
+
+
+
+/* =====================================================
+   首頁
+===================================================== */
+
+function goHome() {
+
+  selectedService = null;
+  selectedDoctor = null;
+  selectedDate = null;
+  selectedTime = null;
+
+  currentLookupBooking = null;
+  currentLookupPhone = '';
+
+  showStandalonePage(
+    'homePage'
+  );
+
+}
+
+
+function startBooking() {
+
+  selectedService = null;
+  selectedDoctor = null;
+  selectedDate = null;
+  selectedTime = null;
+
+  showBookingPage(
+    'servicePage',
+    1
+  );
+
+  loadServices();
+
+}
+
+
+
+/* =====================================================
+   STEP 1
+===================================================== */
+
+function loadServices() {
+
+  const container =
+    document.getElementById(
+      'serviceList'
+    );
+
+
+  container.innerHTML =
+    '<div class="loading">' +
+    '正在讀取服務項目...' +
+    '</div>';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      showServices
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(error);
+
+        container.innerHTML =
+          '<div class="loading">' +
+          '服務資料讀取失敗' +
+          '</div>';
+
+      }
+    )
+
+    .getServices();
+
+}
+
+
+function showServices(
+  services
+) {
+
+  const container =
+    document.getElementById(
+      'serviceList'
+    );
+
+
+  container.innerHTML = '';
+
+
+  if (
+    !services ||
+    services.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="loading">' +
+      '目前沒有開放預約的服務' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  services.forEach(
+    function(service) {
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'service-card';
+
+
+      const title =
+        document.createElement(
+          'div'
+        );
+
+      title.className =
+        'service-title';
+
+      title.textContent =
+        service.name;
+
+
+      const description =
+        document.createElement(
+          'div'
+        );
+
+      description.className =
+        'service-description';
+
+      description.textContent =
+        service.description || '';
+
+
+      card.appendChild(title);
+      card.appendChild(description);
+
+
+      card.onclick =
+        function() {
+
+          selectService(
+            service
+          );
+
+        };
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+function selectService(
+  service
+) {
+
+  selectedService =
+    service;
+
+  selectedDoctor = null;
+  selectedDate = null;
+  selectedTime = null;
+
+
+  showBookingPage(
+    'doctorPage',
+    2
+  );
+
+
+  loadDoctors();
+
+}
+
+
+
+/* =====================================================
+   STEP 2
+===================================================== */
+
+function loadDoctors() {
+
+  const container =
+    document.getElementById(
+      'doctorList'
+    );
+
+
+  container.innerHTML =
+    '<div class="loading">' +
+    '正在讀取麻醉醫師...' +
+    '</div>';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      showDoctors
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(error);
+
+        container.innerHTML =
+          '<div class="loading">' +
+          '讀取麻醉醫師失敗' +
+          '</div>';
+
+      }
+    )
+
+    .getDoctors(
+      selectedService.serviceId
+    );
+
+}
+
+
+function showDoctors(
+  doctors
+) {
+
+  const container =
+    document.getElementById(
+      'doctorList'
+    );
+
+
+  container.innerHTML = '';
+
+
+  if (
+    !doctors ||
+    doctors.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="loading">' +
+      '目前沒有可預約的麻醉醫師' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  doctors.forEach(
+    function(doctor) {
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'service-card';
+
+
+      const title =
+        document.createElement(
+          'div'
+        );
+
+      title.className =
+        'service-title';
+
+      title.textContent =
+        doctor.displayName;
+
+
+      const description =
+        document.createElement(
+          'div'
+        );
+
+      description.className =
+        'service-description';
+
+      description.textContent =
+        '麻醉專科醫師';
+
+
+      card.appendChild(title);
+      card.appendChild(description);
+
+
+      card.onclick =
+        function() {
+
+          selectDoctor(
+            doctor
+          );
+
+        };
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+function selectDoctor(
+  doctor
+) {
+
+  selectedDoctor =
+    doctor;
+
+  selectedDate = null;
+  selectedTime = null;
+
+
+  showBookingPage(
+    'datePage',
+    3
+  );
+
+
+  loadDates();
+
+}
+
+
+
+/* =====================================================
+   STEP 3
+===================================================== */
+
+function loadDates() {
+
+  const container =
+    document.getElementById(
+      'dateList'
+    );
+
+
+  container.innerHTML =
+    '<div class="loading">' +
+    '正在讀取可預約日期...' +
+    '</div>';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      showAvailableDates
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(error);
+
+        container.innerHTML =
+          '<div class="loading">' +
+          '讀取可預約日期失敗' +
+          '</div>';
+
+      }
+    )
+
+    .getAvailableDates(
+      selectedDoctor.doctorId
+    );
+
+}
+
+
+function showAvailableDates(
+  dates
+) {
+
+  const container =
+    document.getElementById(
+      'dateList'
+    );
+
+
+  container.innerHTML = '';
+
+
+  if (
+    !dates ||
+    dates.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="loading">' +
+      '目前沒有可預約日期' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  dates.forEach(
+    function(date) {
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'service-card';
+
+
+      const title =
+        document.createElement(
+          'div'
+        );
+
+      title.className =
+        'service-title';
+
+      title.textContent =
+        formatDateDisplay(
+          date
+        );
+
+
+      card.appendChild(
+        title
+      );
+
+
+      card.onclick =
+        function() {
+
+          selectDate(
+            date
+          );
+
+        };
+
+
+      container.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+function selectDate(
+  date
+) {
+
+  selectedDate =
+    date;
+
+  selectedTime =
+    null;
+
+
+  showBookingPage(
+    'timePage',
+    4
+  );
+
+
+  loadTimes();
+
+}
+
+
+
+/* =====================================================
+   STEP 4
+===================================================== */
+
+function loadTimes() {
+
+  const container =
+    document.getElementById(
+      'timeList'
+    );
+
+
+  container.innerHTML =
+    '<div class="loading">' +
+    '正在計算可預約時段...' +
+    '</div>';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      showAvailableSlots
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        console.error(error);
+
+        container.innerHTML =
+          '<div class="loading">' +
+          '讀取可預約時段失敗' +
+          '</div>';
+
+      }
+    )
+
+    .getAvailableSlots(
+      selectedDoctor.doctorId,
+      selectedDate,
+      selectedService.serviceId
+    );
+
+}
+
+
+function showAvailableSlots(
+  slots
+) {
+
+  const container =
+    document.getElementById(
+      'timeList'
+    );
+
+
+  container.innerHTML = '';
+
+
+  if (
+    !slots ||
+    slots.length === 0
+  ) {
+
+    container.innerHTML =
+      '<div class="loading">' +
+      '此日期目前沒有可預約時段' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  const grid =
+    document.createElement(
+      'div'
+    );
+
+
+  grid.className =
+    'time-grid';
+
+
+  slots.forEach(
+    function(time) {
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'time-card';
+
+
+      card.textContent =
+        time;
+
+
+      card.onclick =
+        function() {
+
+          selectTime(
+            time
+          );
+
+        };
+
+
+      grid.appendChild(
+        card
+      );
+
+    }
+  );
+
+
+  container.appendChild(
+    grid
+  );
+
+}
+
+
+function selectTime(
+  time
+) {
+
+  selectedTime =
+    time;
+
+
+  showConfirmation();
+
+}
+
+
+
+/* =====================================================
+   STEP 5
+===================================================== */
+
+function showConfirmation() {
+
+  document.getElementById(
+    'confirmService'
+  ).textContent =
+    selectedService.name;
+
+
+  document.getElementById(
+    'confirmDoctor'
+  ).textContent =
+    selectedDoctor.displayName;
+
+
+  document.getElementById(
+    'confirmDate'
+  ).textContent =
+    formatDateDisplay(
+      selectedDate
+    );
+
+
+  document.getElementById(
+    'confirmTime'
+  ).textContent =
+    selectedTime;
+
+
+  document.getElementById(
+    'confirmDuration'
+  ).textContent =
+    (
+      Number(
+        selectedService.duration
+      ) || 3
+    ) +
+    ' 小時';
+
+
+  clearBookingMessage();
+
+
+  showBookingPage(
+    'confirmPage',
+    5
+  );
+
+}
+
+
+
+/* =====================================================
+   送出預約申請
+===================================================== */
+
+function submitBooking() {
+
+  if (
+    bookingSubmitting
+  ) {
+
+    return;
+
+  }
+
+
+  const clinicName =
+    document
+      .getElementById(
+        'clinicName'
+      )
+      .value
+      .trim();
+
+
+  const contactName =
+    document
+      .getElementById(
+        'contactName'
+      )
+      .value
+      .trim();
+
+
+  const contactPhone =
+    document
+      .getElementById(
+        'contactPhone'
+      )
+      .value
+      .trim();
+
+
+  const note =
+    document
+      .getElementById(
+        'bookingNote'
+      )
+      .value
+      .trim();
+
+
+  if (!clinicName) {
+
+    showBookingError(
+      '請填寫診所名稱。'
+    );
+
+    return;
+
+  }
+
+
+  if (!contactName) {
+
+    showBookingError(
+      '請填寫聯絡人。'
+    );
+
+    return;
+
+  }
+
+
+  if (!contactPhone) {
+
+    showBookingError(
+      '請填寫聯絡電話。'
+    );
+
+    return;
+
+  }
+
+
+  bookingSubmitting =
+    true;
+
+
+  clearBookingMessage();
+
+
+  const button =
+    document.getElementById(
+      'submitBookingButton'
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    '正在送出申請...';
+
+
+  const data = {
+
+    serviceId:
+      selectedService.serviceId,
+
+    doctorId:
+      selectedDoctor.doctorId,
+
+    date:
+      selectedDate,
+
+    time:
+      selectedTime,
+
+    clinicName:
+      clinicName,
+
+    clinicId: '',
+
+    contactName:
+      contactName,
+
+    contactPhone:
+      contactPhone,
+
+    note:
+      note,
+
+    lineIdToken:
+      rebornLineIdToken || ''
+
+  };
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result) {
+
+        bookingSubmitting =
+          false;
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          '送出預約申請';
+
+
+        if (
+          !result ||
+          result.success !== true
+        ) {
+
+          if (
+            result &&
+            result.code ===
+              'SLOT_UNAVAILABLE'
+          ) {
+
+            alert(
+              result.message
+            );
+
+
+            selectedTime =
+              null;
+
+
+            showBookingPage(
+              'timePage',
+              4
+            );
+
+
+            loadTimes();
+
+            return;
+
+          }
+
+
+          showBookingError(
+            result &&
+            result.message
+              ? result.message
+              : '預約申請送出失敗。'
+          );
+
+          return;
+
+        }
+
+
+        showBookingSuccess(
+          result
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        bookingSubmitting =
+          false;
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          '送出預約申請';
+
+
+        showBookingError(
+          error &&
+          error.message
+            ? error.message
+            : '系統發生錯誤。'
+        );
+
+      }
+    )
+
+    .createBooking(
+      data
+    );
+
+}
+
+
+
+/* =====================================================
+   申請送出成功
+===================================================== */
+
+function showBookingSuccess(
+  result
+) {
+
+  document.getElementById(
+    'successCaseId'
+  ).textContent =
+    result.caseId || '';
+
+
+  document.getElementById(
+    'successService'
+  ).textContent =
+    result.serviceName ||
+    selectedService.name;
+
+
+  document.getElementById(
+    'successDoctor'
+  ).textContent =
+    result.doctorName ||
+    selectedDoctor.displayName;
+
+
+  document.getElementById(
+    'successDate'
+  ).textContent =
+    formatDateDisplay(
+      result.date ||
+      selectedDate
+    );
+
+
+  document.getElementById(
+    'successTime'
+  ).textContent =
+    result.time ||
+    selectedTime;
+
+
+  document.getElementById(
+    'successClinic'
+  ).textContent =
+    result.clinicName || '';
+
+
+  showStandalonePage(
+    'successPage'
+  );
+
+}
+
+
+
+/* =====================================================
+   查詢入口
+===================================================== */
+
+function openBookingLookup() {
+
+  currentLookupBooking =
+    null;
+
+
+  currentLookupPhone =
+    '';
+
+
+  document.getElementById(
+    'lookupCaseId'
+  ).value = '';
+
+
+  document.getElementById(
+    'lookupPhone'
+  ).value = '';
+
+
+  clearLookupMessage();
+
+
+  showStandalonePage(
+    'lookupPage'
+  );
+
+}
+
+
+
+/* =====================================================
+   查詢案件
+===================================================== */
+
+function searchBooking() {
+
+  const caseId =
+    document
+      .getElementById(
+        'lookupCaseId'
+      )
+      .value
+      .trim()
+      .toUpperCase();
+
+
+  const phone =
+    document
+      .getElementById(
+        'lookupPhone'
+      )
+      .value
+      .trim();
+
+
+  if (!caseId) {
+
+    showLookupError(
+      '請輸入案件編號。'
+    );
+
+    return;
+
+  }
+
+
+  if (!phone) {
+
+    showLookupError(
+      '請輸入聯絡電話。'
+    );
+
+    return;
+
+  }
+
+
+  clearLookupMessage();
+
+
+  const button =
+    document.getElementById(
+      'lookupButton'
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    '正在查詢...';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result) {
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          '查詢預約';
+
+
+        if (
+          !result ||
+          result.success !== true
+        ) {
+
+          showLookupError(
+            result &&
+            result.message
+              ? result.message
+              : '找不到符合的預約資料。'
+          );
+
+          return;
+
+        }
+
+
+        currentLookupBooking =
+          result.booking;
+
+
+        currentLookupPhone =
+          phone;
+
+
+        showBookingDetail(
+          result.booking
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          '查詢預約';
+
+
+        showLookupError(
+          error &&
+          error.message
+            ? error.message
+            : '查詢失敗，請稍後再試。'
+        );
+
+      }
+    )
+
+    .lookupBooking(
+      caseId,
+      phone
+    );
+
+}
+
+
+
+/* =====================================================
+   顯示案件
+===================================================== */
+
+function showBookingDetail(
+  booking
+) {
+
+  document.getElementById(
+    'detailCaseId'
+  ).textContent =
+    booking.caseId || '';
+
+
+  document.getElementById(
+    'detailStatus'
+  ).textContent =
+    booking.status || '';
+
+
+  document.getElementById(
+    'detailClinic'
+  ).textContent =
+    booking.clinicName || '';
+
+
+  document.getElementById(
+    'detailService'
+  ).textContent =
+    booking.serviceName || '';
+
+
+  document.getElementById(
+    'detailDoctor'
+  ).textContent =
+    booking.doctorName || '';
+
+
+  document.getElementById(
+    'detailDate'
+  ).textContent =
+    formatDateDisplay(
+      booking.date
+    );
+
+
+  document.getElementById(
+    'detailTime'
+  ).textContent =
+    booking.time || '';
+
+
+  document.getElementById(
+    'detailDuration'
+  ).textContent =
+    booking.duration
+      ? booking.duration +
+        ' 小時'
+      : '';
+
+
+  const cancelButton =
+    document.getElementById(
+      'cancelBookingButton'
+    );
+
+
+  if (
+    booking.canCancel
+  ) {
+
+    cancelButton.style.display =
+      'block';
+
+    cancelButton.disabled =
+      false;
+
+
+    if (
+      booking.status ===
+      '待確認'
+    ) {
+
+      cancelButton.textContent =
+        '取消預約申請';
+
+    }
+    else {
+
+      cancelButton.textContent =
+        '取消此預約';
+
+    }
+
+  }
+  else {
+
+    cancelButton.style.display =
+      'none';
+
+  }
+
+
+  const message =
+    document.getElementById(
+      'detailMessage'
+    );
+
+
+  if (
+    booking.status ===
+    '待確認'
+  ) {
+
+    message.textContent =
+      '此預約申請目前正在等待芮朋麻醉會社確認。時段已暫時保留，待確認後預約排程才正式成立。';
+
+    message.className =
+      'message info';
+
+  }
+  else if (
+    !booking.canCancel
+  ) {
+
+    message.textContent =
+      '此案件目前狀態為「' +
+      booking.status +
+      '」，無法再取消。';
+
+    message.className =
+      'message info';
+
+  }
+  else {
+
+    message.textContent = '';
+
+    message.className =
+      'message';
+
+  }
+
+
+  showStandalonePage(
+    'bookingDetailPage'
+  );
+
+}
+
+
+
+/* =====================================================
+   取消預約 / 預約申請
+===================================================== */
+
+function requestCancelBooking() {
+
+  if (
+    !currentLookupBooking
+  ) {
+
+    return;
+
+  }
+
+
+  const isPending =
+    currentLookupBooking.status ===
+    '待確認';
+
+
+  const confirmed =
+    window.confirm(
+      isPending
+        ?
+        (
+          '確定要取消此預約申請嗎？\n\n' +
+          '案件編號：' +
+          currentLookupBooking.caseId +
+          '\n' +
+          '日期：' +
+          formatDateDisplay(
+            currentLookupBooking.date
+          ) +
+          '\n' +
+          '時間：' +
+          currentLookupBooking.time +
+          '\n\n' +
+          '取消後原保留時段將重新開放。'
+        )
+        :
+        (
+          '確定要取消此預約嗎？\n\n' +
+          '案件編號：' +
+          currentLookupBooking.caseId +
+          '\n' +
+          '日期：' +
+          formatDateDisplay(
+            currentLookupBooking.date
+          ) +
+          '\n' +
+          '時間：' +
+          currentLookupBooking.time +
+          '\n\n' +
+          '取消後原時段將重新開放。'
+        )
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      'cancelBookingButton'
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    isPending
+      ? '正在取消申請...'
+      : '正在取消預約...';
+
+
+  google.script.run
+
+    .withSuccessHandler(
+      function(result) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          isPending
+            ? '取消預約申請'
+            : '取消此預約';
+
+
+        if (
+          !result ||
+          result.success !== true
+        ) {
+
+          const message =
+            document.getElementById(
+              'detailMessage'
+            );
+
+
+          message.textContent =
+            result &&
+            result.message
+              ? result.message
+              : '取消失敗，請稍後再試。';
+
+
+          message.className =
+            'message error';
+
+
+          return;
+
+        }
+
+
+        document.getElementById(
+          'cancelledCaseId'
+        ).textContent =
+          result.caseId ||
+          currentLookupBooking.caseId;
+
+
+        showStandalonePage(
+          'cancelSuccessPage'
+        );
+
+      }
+    )
+
+    .withFailureHandler(
+      function(error) {
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          isPending
+            ? '取消預約申請'
+            : '取消此預約';
+
+
+        const message =
+          document.getElementById(
+            'detailMessage'
+          );
+
+
+        message.textContent =
+          error &&
+          error.message
+            ? error.message
+            : '取消失敗，請稍後再試。';
+
+
+        message.className =
+          'message error';
+
+      }
+    )
+
+    .cancelBooking(
+      currentLookupBooking.caseId,
+      currentLookupPhone
+    );
+
+}
+
+
+
+/* =====================================================
+   返回
+===================================================== */
+
+function backToServices() {
+
+  selectedDoctor = null;
+  selectedDate = null;
+  selectedTime = null;
+
+
+  showBookingPage(
+    'servicePage',
+    1
+  );
+
+}
+
+
+function backToDoctors() {
+
+  selectedDate = null;
+  selectedTime = null;
+
+
+  showBookingPage(
+    'doctorPage',
+    2
+  );
+
+}
+
+
+function backToDates() {
+
+  selectedTime = null;
+
+
+  showBookingPage(
+    'datePage',
+    3
+  );
+
+}
+
+
+function backToTimes() {
+
+  clearBookingMessage();
+
+
+  showBookingPage(
+    'timePage',
+    4
+  );
+
+}
+
+
+
+/* =====================================================
+   建立另一筆
+===================================================== */
+
+function startNewBooking() {
+
+  selectedService = null;
+  selectedDoctor = null;
+  selectedDate = null;
+  selectedTime = null;
+
+  bookingSubmitting = false;
+
+
+  document.getElementById(
+    'clinicName'
+  ).value = '';
+
+
+  document.getElementById(
+    'contactName'
+  ).value = '';
+
+
+  document.getElementById(
+    'contactPhone'
+  ).value = '';
+
+
+  document.getElementById(
+    'bookingNote'
+  ).value = '';
+
+
+  startBooking();
+
+}
+
+
+
+/* =====================================================
+   訊息
+===================================================== */
+
+function showBookingError(
+  text
+) {
+
+  const box =
+    document.getElementById(
+      'bookingMessage'
+    );
+
+
+  box.textContent =
+    text;
+
+
+  box.className =
+    'message error';
+
+}
+
+
+function clearBookingMessage() {
+
+  const box =
+    document.getElementById(
+      'bookingMessage'
+    );
+
+
+  box.textContent = '';
+
+  box.className =
+    'message';
+
+}
+
+
+function showLookupError(
+  text
+) {
+
+  const box =
+    document.getElementById(
+      'lookupMessage'
+    );
+
+
+  box.textContent =
+    text;
+
+
+  box.className =
+    'message error';
+
+}
+
+
+function clearLookupMessage() {
+
+  const box =
+    document.getElementById(
+      'lookupMessage'
+    );
+
+
+  box.textContent = '';
+
+  box.className =
+    'message';
+
+}
+
+
+
+/* =====================================================
+   日期格式
+===================================================== */
+
+function formatDateDisplay(
+  dateString
+) {
+
+  if (!dateString) {
+
+    return '';
+
+  }
+
+
+  const normalized =
+    String(
+      dateString
+    ).replace(
+      /\//g,
+      '-'
+    );
+
+
+  const parts =
+    normalized.split(
+      '-'
+    );
+
+
+  if (
+    parts.length !== 3
+  ) {
+
+    return dateString;
+
+  }
+
+
+  const year =
+    Number(
+      parts[0]
+    );
+
+
+  const month =
+    Number(
+      parts[1]
+    );
+
+
+  const day =
+    Number(
+      parts[2]
+    );
+
+
+  const date =
+    new Date(
+      year,
+      month - 1,
+      day
+    );
+
+
+  const weekdays = [
+    '日',
+    '一',
+    '二',
+    '三',
+    '四',
+    '五',
+    '六'
+  ];
+
+
+  return (
+    year +
+    ' / ' +
+    String(month)
+      .padStart(
+        2,
+        '0'
+      ) +
+    ' / ' +
+    String(day)
+      .padStart(
+        2,
+        '0'
+      ) +
+    '（' +
+    weekdays[
+      date.getDay()
+    ] +
+    '）'
+  );
+
+}
+
+</script>
+
+</body>
+</html>
